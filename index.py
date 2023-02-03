@@ -20,14 +20,20 @@ import json
 from api.v1.Util import Expense
 import ssl
 import certifi
+from flask import jsonify
+
 
 app = Flask(__name__)
 
-url = 'https://www.sefaz.rs.gov.br/ASP/AAE_ROOT/NFE/SAT-WEB-NFE-NFC_QRCODE_1.asp?p=43211193015006000113651140006396901026593587%7C2%7C1%7C1%7C373BE30B0BD593FAF55E1D6F76F52AAC78F5F441'
+url = 'https://www.sefaz.rs.gov.br/ASP/AAE_ROOT/NFE/SAT-WEB-NFE-NFC_QRCODE_1.asp?p='
+ateste = '43211193015006000113651140006396901026593587%7C2%7C1%7C1%7C373BE30B0BD593FAF55E1D6F76F52AAC78F5F441'
 
-@app.route('/')
-def hello():
-    page = urlopen(url,context=ssl.create_default_context(cafile=certifi.where()))
+
+
+@app.route('/notafiscal/<codigo>', methods = ['GET'])
+def hello(codigo):
+    print(url + codigo)
+    page = urlopen(url + codigo,context=ssl.create_default_context(cafile=certifi.where()))
     html = page.read()
     soup = BeautifulSoup(html, "html.parser")
     local = soup.find_all(class_ = 'NFCCabecalho_SubTitulo')
@@ -74,8 +80,6 @@ def hello():
     nome = ''
     quantidade = 0
     tipo = ''
-    valor = 0
-    valorPorProduto = 0 
 
     itens = [] 
     for index,i in enumerate(mm[5:len(mm)-9]):
@@ -100,7 +104,13 @@ def hello():
     exp2.local = local
     
     return exp2.toJSON().replace('\n','')
-    #return 'Hello, World!'
+
+@app.route('/teste/<int:todo_ID>', methods = ['GET'])
+def hello2(todo_ID):
+    response = {}
+    response['id'] = todo_ID
+    return jsonify(response)
+
 
 # main driver function
 if __name__ == '__main__':
