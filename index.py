@@ -92,11 +92,16 @@ def hello(codigo):
             quantidade = i.string
         if enum == 3: 
             tipo = i.string
-            
+        if enum == 4: 
+            valor = i.string
+        if enum == 5: 
+            valorPorProduto = i.string
+
         enum = enum + 1
         if enum == 6 :
             enum = 0
-            itens.append({'codigo': codigo, 'nome':nome,'quantidade':quantidade,'tipo':tipo})
+            itens.append({'codigo': codigo, 'nome':nome,'quantidade':quantidade,'tipo':tipo, 'valor':valor , 'valorPorProduto':valorPorProduto})
+
         
     exp2 = Expense()
     exp2.itens = itens
