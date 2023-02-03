@@ -108,7 +108,7 @@ def hello(codigo):
     exp2.resumo = resumoNota
     exp2.local = local
     
-    return jsonify(exp2.toJSON().replace('\n',''))
+    return exp2.toJSON().replace('\n','')
 
 @app.route('/teste/<int:todo_ID>', methods = ['GET'])
 def hello2(todo_ID):
